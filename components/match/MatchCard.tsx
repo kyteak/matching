@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Match } from '@/types/database'
 import { SPORT_COLORS, LEVEL_COLORS, formatDateTime } from '@/lib/utils'
 import { Badge } from '@/components/ui/Badge'
@@ -22,7 +23,7 @@ export function MatchCard({ match, currentUserId, hasApplied, onApply, applying 
   const isCancelled = match.status === '취소됨'
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+    <Link href={`/match/${match.id}`} className="block bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${sport.bg} ${sport.text}`}>
@@ -71,7 +72,7 @@ export function MatchCard({ match, currentUserId, hasApplied, onApply, applying 
           className="w-full"
           disabled={hasApplied}
           loading={applying}
-          onClick={() => !hasApplied && onApply(match.id)}
+          onClick={(e) => { e.preventDefault(); if (!hasApplied) onApply(match.id) }}
         >
           {hasApplied ? '신청 완료 ✓' : '매치 신청'}
         </Button>
@@ -79,6 +80,6 @@ export function MatchCard({ match, currentUserId, hasApplied, onApply, applying 
       {isOwner && (
         <div className="text-xs text-center text-gray-400 py-1">내가 작성한 매치</div>
       )}
-    </div>
+    </Link>
   )
 }
