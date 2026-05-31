@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -29,14 +29,18 @@ const EMPTY: Form = {
 
 export default function ContestResumePage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const fromProfile = searchParams.get('from') === 'profile'
   const supabase = createClient()
   const { toasts, addToast, removeToast } = useToast()
 
   const [form, setForm] = useState<Form>(EMPTY)
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [fromProfile, setFromProfile] = useState(false)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setFromProfile(params.get('from') === 'profile')
+  }, [])
 
   useEffect(() => {
     async function load() {
