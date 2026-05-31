@@ -11,10 +11,10 @@ interface FilterBarProps {
   onLevelChange: (level: string) => void
 }
 
-const SPORTS = ['전체', '축구', '풋살', '농구', 'e스포츠']
+const SPORTS = ['전체', '축구', '풋살', '농구', '테니스', '배드민턴', '탁구', 'e스포츠']
 const LEVELS = ['전체', '초급', '중급', '고수']
 const SPORT_EMOJIS: Record<string, string> = {
-  축구: '⚽', 풋살: '🥅', 농구: '🏀', 'e스포츠': '🎮',
+  축구: '⚽', 풋살: '🥅', 농구: '🏀', 테니스: '🎾', 배드민턴: '🏸', 탁구: '🏓', 'e스포츠': '🎮',
 }
 
 export function FilterBar({
