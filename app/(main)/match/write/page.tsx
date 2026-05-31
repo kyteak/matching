@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Toast, useToast } from '@/components/Toast'
 import { SPORT_ALLOWED_SIZES } from '@/lib/utils'
 
-const SPORTS = ['축구', '풋살', '농구', 'e스포츠']
+const SPORTS = ['축구', '풋살', '농구', 'e스포츠', '테니스', '배드민턴', '탁구']
 const LEVELS = ['초급', '중급', '고수']
 
 export default function MatchWritePage() {

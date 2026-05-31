@@ -50,6 +50,9 @@ export const SPORT_COLORS: Record<string, { bg: string; text: string; emoji: str
   풋살: { bg: 'bg-blue-100', text: 'text-blue-700', emoji: '🥅' },
   농구: { bg: 'bg-orange-100', text: 'text-orange-700', emoji: '🏀' },
   'e스포츠': { bg: 'bg-purple-100', text: 'text-purple-700', emoji: '🎮' },
+  테니스: { bg: 'bg-yellow-100', text: 'text-yellow-700', emoji: '🎾' },
+  배드민턴: { bg: 'bg-sky-100', text: 'text-sky-700', emoji: '🏸' },
+  탁구: { bg: 'bg-red-100', text: 'text-red-700', emoji: '🏓' },
 }
 
 export const LEVEL_COLORS: Record<string, { bg: string; text: string }> = {
@@ -110,8 +113,11 @@ export const DEPARTMENTS = [
 ]
 
 export const SPORT_ALLOWED_SIZES: Record<string, string[]> = {
-  축구: ['5vs5', '11vs11'],
-  풋살: ['3vs3', '5vs5'],
+  축구: ['6vs6', '7vs7', '11vs11'],
+  풋살: ['5vs5'],
   농구: ['3vs3', '5vs5'],
   'e스포츠': ['1vs1', '3vs3', '5vs5'],
+  테니스: ['단식', '복식'],
+  배드민턴: ['단식', '복식'],
+  탁구: ['단식', '복식'],
 }
