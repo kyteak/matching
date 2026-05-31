@@ -1,6 +1,6 @@
 export type SkillLevel = '초급' | '중급' | '고수'
-export type Sport = '축구' | '풋살' | '농구' | 'e스포츠'
-export type MatchSize = '1vs1' | '3vs3' | '5vs5' | '11vs11'
+export type Sport = '축구' | '풋살' | '농구' | 'e스포츠' | '테니스' | '배드민턴' | '탁구'
+export type MatchSize = '단식' | '복식' | '1vs1' | '3vs3' | '5vs5' | '6vs6' | '7vs7' | '11vs11'
 export type MatchStatus = '모집중' | '매치확정' | '취소됨'
 export type ApplicationStatus = 'pending' | 'accepted' | 'rejected'
 export type ContestStatus = '모집중' | '마감'

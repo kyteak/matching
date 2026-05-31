@@ -29,6 +29,8 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
   const [deleting, setDeleting] = useState(false)
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [claiming, setClaiming] = useState(false)
+  const [authorExists, setAuthorExists] = useState<boolean | null>(null)
   const [editForm, setEditForm] = useState({
     teamName: '', sport: '', matchSize: '', requiredLevel: '',
     location: '', matchDatetime: '', description: '',
@@ -63,6 +65,15 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         setHasApplied(
           (apps ?? []).some((a) => a.applicant_id === user.id && a.status !== 'rejected')
         )
+        // 작성자가 현재 프로필 DB에 존재하는지 확인
+        if (matchData.author_id !== user.id) {
+          const { data: authorProf } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('id', matchData.author_id)
+            .maybeSingle()
+          setAuthorExists(!!authorProf)
+        }
       }
       setLoading(false)
     }
@@ -100,6 +111,23 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
       setHasApplied(false)
       setApplications((prev) => prev.filter((a) => a.id !== myApp.id))
       addToast('신청을 취소했습니다.', 'success')
+    }
+  }
+
+  async function handleClaim() {
+    if (!confirm('이 매치를 내 매치로 가져오시겠습니까?')) return
+    setClaiming(true)
+    try {
+      const res = await fetch(`/api/matches/${id}/claim`, { method: 'POST' })
+      const data = await res.json()
+      if (!res.ok) { addToast(data.error, 'error'); return }
+      setCurrentUserId((prev) => prev)
+      setMatch((prev) => prev ? { ...prev, author_id: currentUserId! } : prev)
+      setAuthorExists(null)
+      addToast('매치 소유권을 가져왔습니다.', 'success')
+      router.refresh()
+    } finally {
+      setClaiming(false)
     }
   }
 
@@ -265,6 +293,11 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         </>
       ) : (
         <div className="space-y-2">
+          {authorExists === false && (
+            <Button variant="outline" className="w-full" onClick={handleClaim} loading={claiming}>
+              내 매치로 가져오기
+            </Button>
+          )}
           {match.status === '모집중' && !hasApplied && (
             <Button variant="primary" className="w-full" onClick={handleApply} loading={applying}>
               매치 신청하기
