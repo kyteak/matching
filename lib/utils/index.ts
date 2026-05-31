@@ -112,6 +112,13 @@ export const DEPARTMENTS = [
   '기타',
 ]
 
+export function getMatchSizeLimit(matchSize: string): number {
+  if (matchSize === '단식') return 1
+  if (matchSize === '복식') return 2
+  const m = matchSize.match(/^(\d+)vs\d+$/)
+  return m ? parseInt(m[1]) : 1
+}
+
 export const SPORT_ALLOWED_SIZES: Record<string, string[]> = {
   축구: ['6vs6', '7vs7', '11vs11'],
   풋살: ['5vs5'],

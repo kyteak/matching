@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { getMatchSizeLimit } from '@/lib/utils'
 
 export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: appId } = await params
@@ -9,7 +10,7 @@ export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: 
 
   const { data: app } = await supabase
     .from('match_applications')
-    .select('*, matches(author_id, team_name, status)')
+    .select('*, matches(author_id, team_name, status, match_size)')
     .eq('id', appId)
     .single()
 
@@ -21,10 +22,19 @@ export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: 
     .update({ status: 'accepted', updated_at: new Date().toISOString() })
     .eq('id', appId)
 
-  await supabase
-    .from('matches')
-    .update({ status: '매치확정', updated_at: new Date().toISOString() })
-    .eq('id', app.match_id)
+  const limit = getMatchSizeLimit(app.matches?.match_size ?? '단식')
+  const { count: acceptedCount } = await supabase
+    .from('match_applications')
+    .select('id', { count: 'exact', head: true })
+    .eq('match_id', app.match_id)
+    .eq('status', 'accepted')
+
+  if ((acceptedCount ?? 0) >= limit) {
+    await supabase
+      .from('matches')
+      .update({ status: '매치확정', updated_at: new Date().toISOString() })
+      .eq('id', app.match_id)
+  }
 
   await supabase.from('message_rooms').insert({
     application_id: appId,
@@ -39,5 +49,6 @@ export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: 
     related_id: app.match_id,
   })
 
-  return NextResponse.json({ success: true })
+  const confirmed = (acceptedCount ?? 0) >= limit
+  return NextResponse.json({ success: true, confirmed })
 }

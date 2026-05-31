@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { getMatchSizeLimit } from '@/lib/utils'
 
 export async function POST(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id: matchId } = await params
@@ -9,13 +10,21 @@ export async function POST(_: NextRequest, { params }: { params: Promise<{ id: s
 
   const { data: match } = await supabase
     .from('matches')
-    .select('author_id, team_name, status')
+    .select('author_id, team_name, status, match_size')
     .eq('id', matchId)
     .single()
 
   if (!match) return NextResponse.json({ error: '매치를 찾을 수 없습니다.' }, { status: 404 })
   if (match.author_id === user.id) return NextResponse.json({ error: '본인 게시글에는 신청할 수 없습니다.' }, { status: 400 })
   if (match.status !== '모집중') return NextResponse.json({ error: '신청할 수 없는 매치입니다.' }, { status: 400 })
+
+  const limit = getMatchSizeLimit(match.match_size)
+  const { count } = await supabase
+    .from('match_applications')
+    .select('id', { count: 'exact', head: true })
+    .eq('match_id', matchId)
+    .neq('status', 'rejected')
+  if ((count ?? 0) >= limit) return NextResponse.json({ error: `인원이 마감되었습니다. (최대 ${limit}명)` }, { status: 400 })
 
   const { data: profile } = await supabase
     .from('profiles')
