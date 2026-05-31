@@ -160,6 +160,7 @@ export default function ProfilePage() {
         {tab === 'info' && (
           <div className="space-y-4">
             <div className="bg-white rounded-2xl p-4 space-y-3 shadow-sm">
+              <InfoRow label="이름" value={profile.full_name} />
               <InfoRow label="아이디" value={`@${profile.username}`} />
               <InfoRow label="학번" value={maskStudentId(profile.student_id)} />
               <InfoRow label="학과" value={profile.department ?? '미설정'} />
