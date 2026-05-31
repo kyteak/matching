@@ -97,7 +97,7 @@ export default function ContestPage() {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-24 space-y-3">
         {tab === 'static' ? (
           staticContests.length === 0 ? (
             <EmptyState />
@@ -185,13 +185,15 @@ export default function ContestPage() {
         )}
       </div>
 
-      <button
-        onClick={handleTeamMatchClick}
-        className="fixed bottom-20 right-4 bg-[#FF6B35] text-white rounded-full px-4 py-3 shadow-lg flex items-center gap-2 text-sm font-semibold hover:bg-orange-500 transition-colors"
-      >
-        <Trophy className="w-4 h-4" />
-        팀 모집
-      </button>
+      <div className="fixed bottom-16 left-0 right-0 max-w-lg mx-auto px-4 pb-2">
+        <button
+          onClick={handleTeamMatchClick}
+          className="w-full bg-[#FF6B35] hover:bg-orange-500 active:bg-orange-600 text-white rounded-2xl py-4 flex items-center justify-center gap-2 font-bold text-base shadow-lg transition-colors"
+        >
+          <Trophy className="w-5 h-5" />
+          공모전 팀 모집 참여하기
+        </button>
+      </div>
     </div>
   )
 }
