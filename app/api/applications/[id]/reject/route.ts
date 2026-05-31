@@ -9,7 +9,7 @@ export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: 
 
   const { data: app } = await supabase
     .from('match_applications')
-    .select('*, matches(author_id)')
+    .select('*, matches(author_id, team_name)')
     .eq('id', appId)
     .single()
 
@@ -24,7 +24,7 @@ export async function PATCH(_: NextRequest, { params }: { params: Promise<{ id: 
   await supabase.from('notifications').insert({
     user_id: app.applicant_id,
     type: 'match_reject',
-    message: '거절되었습니다.',
+    message: `"${app.matches?.team_name}" 매치 신청이 거절되었습니다.`,
     related_id: app.match_id,
   })
 

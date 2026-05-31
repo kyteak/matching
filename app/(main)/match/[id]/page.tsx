@@ -59,7 +59,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
         setCurrentUserId(user.id)
         const { data: apps } = await supabase
           .from('match_applications')
-          .select('*, profiles(id, nickname, skill_level)')
+          .select('*, profiles(id, nickname, full_name, department, skill_level)')
           .eq('match_id', id)
         setApplications(apps ?? [])
         setHasApplied(

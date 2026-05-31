@@ -1,24 +1,33 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Notification } from '@/types/database'
 import { Button } from '@/components/ui/Button'
 import { getTimeAgo } from '@/lib/utils'
-import { Bell } from 'lucide-react'
+import { Bell, ChevronRight, CheckCheck } from 'lucide-react'
 
-const TYPE_LABEL: Record<string, string> = {
-  match_apply: '새 매치 신청',
-  match_accept: '매치 신청 수락',
-  match_reject: '매치 신청 거절',
-  match_cancel: '매치 취소',
-  new_message: '새 메시지',
-  contest_apply: '공모전 팀 신청',
-  contest_accept: '팀 합류 수락',
-  contest_reject: '팀 합류 거절',
+const TYPE_CONFIG: Record<string, { label: string; dotColor: string; labelColor: string }> = {
+  match_apply:    { label: '새 매치 신청', dotColor: 'bg-blue-500',   labelColor: 'text-blue-600'  },
+  match_accept:   { label: '신청 수락',    dotColor: 'bg-green-500',  labelColor: 'text-green-600' },
+  match_reject:   { label: '신청 거절',    dotColor: 'bg-red-500',    labelColor: 'text-red-500'   },
+  match_cancel:   { label: '매치 취소',    dotColor: 'bg-gray-400',   labelColor: 'text-gray-500'  },
+  new_message:    { label: '새 메시지',    dotColor: 'bg-purple-500', labelColor: 'text-purple-600'},
+  contest_apply:  { label: '대회 팀 신청', dotColor: 'bg-blue-500',   labelColor: 'text-blue-600'  },
+  contest_accept: { label: '팀 합류 수락', dotColor: 'bg-green-500',  labelColor: 'text-green-600' },
+  contest_reject: { label: '팀 합류 거절', dotColor: 'bg-red-500',    labelColor: 'text-red-500'   },
+}
+
+function getLink(n: Notification): string | null {
+  if (!n.related_id) return null
+  if (n.type === 'new_message') return '/messages'
+  if (n.type.startsWith('contest_')) return `/contest/${n.related_id}`
+  return `/match/${n.related_id}`
 }
 
 export default function NotificationsPage() {
+  const router = useRouter()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
   const [markingAll, setMarkingAll] = useState(false)
@@ -51,11 +60,15 @@ export default function NotificationsPage() {
     return () => cleanup?.()
   }, [])
 
-  async function markRead(id: string) {
-    await fetch(`/api/notifications/${id}/read`, { method: 'PATCH' })
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
-    )
+  async function handleClick(n: Notification) {
+    if (!n.is_read) {
+      await fetch(`/api/notifications/${n.id}/read`, { method: 'PATCH' })
+      setNotifications((prev) =>
+        prev.map((x) => (x.id === n.id ? { ...x, is_read: true } : x))
+      )
+    }
+    const link = getLink(n)
+    if (link) router.push(link)
   }
 
   async function markAll() {
@@ -72,7 +85,8 @@ export default function NotificationsPage() {
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-bold text-[#1E3A5F]">알림</h1>
         {unreadCount > 0 && (
-          <Button variant="ghost" onClick={markAll} loading={markingAll} className="text-sm">
+          <Button variant="ghost" onClick={markAll} loading={markingAll} className="text-sm gap-1">
+            <CheckCheck className="w-4 h-4" />
             모두 읽음
           </Button>
         )}
@@ -89,28 +103,29 @@ export default function NotificationsPage() {
         </div>
       ) : (
         <div className="space-y-2">
-          {notifications.map((n) => (
-            <div
-              key={n.id}
-              onClick={() => !n.is_read && markRead(n.id)}
-              className={`p-4 rounded-xl border cursor-pointer transition-colors ${
-                n.is_read ? 'bg-white border-gray-100' : 'bg-blue-50 border-blue-200'
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <p className="text-xs font-semibold text-[#1E3A5F] mb-1">
-                    {TYPE_LABEL[n.type] ?? n.type}
+          {notifications.map((n) => {
+            const config = TYPE_CONFIG[n.type] ?? { label: n.type, dotColor: 'bg-gray-400', labelColor: 'text-gray-600' }
+            const link = getLink(n)
+            return (
+              <div
+                key={n.id}
+                onClick={() => handleClick(n)}
+                className={`p-4 rounded-xl border transition-colors flex items-start gap-3 ${
+                  n.is_read ? 'bg-white border-gray-100' : 'bg-blue-50/50 border-blue-200'
+                } ${link ? 'cursor-pointer hover:shadow-sm' : ''}`}
+              >
+                <span className={`w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${n.is_read ? 'bg-gray-200' : config.dotColor}`} />
+                <div className="flex-1 min-w-0">
+                  <p className={`text-xs font-semibold mb-0.5 ${config.labelColor}`}>
+                    {config.label}
                   </p>
-                  <p className="text-sm text-gray-700">{n.message}</p>
+                  <p className="text-sm text-gray-700 leading-snug">{n.message}</p>
+                  <p className="text-xs text-gray-400 mt-1">{getTimeAgo(n.created_at)}</p>
                 </div>
-                {!n.is_read && (
-                  <span className="w-2 h-2 bg-[#FF6B35] rounded-full mt-1 flex-shrink-0" />
-                )}
+                {link && <ChevronRight className="w-4 h-4 text-gray-300 shrink-0 mt-1" />}
               </div>
-              <p className="text-xs text-gray-400 mt-2">{getTimeAgo(n.created_at)}</p>
-            </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>

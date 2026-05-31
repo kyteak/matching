@@ -28,7 +28,7 @@ export async function POST(_: NextRequest, { params }: { params: Promise<{ id: s
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('nickname, skill_level')
+    .select('full_name, department, skill_level')
     .eq('id', user.id)
     .single()
 
@@ -46,8 +46,8 @@ export async function POST(_: NextRequest, { params }: { params: Promise<{ id: s
   await supabase.from('notifications').insert({
     user_id: match.author_id,
     type: 'match_apply',
-    message: `${profile?.nickname} 님이 매치를 신청했습니다. 실력: ${profile?.skill_level}`,
-    related_id: data.id,
+    message: `${profile?.full_name}(${profile?.department}) 님이 "${match.team_name}" 매치를 신청했습니다. 실력: ${profile?.skill_level}`,
+    related_id: matchId,
   })
 
   return NextResponse.json(data, { status: 201 })
