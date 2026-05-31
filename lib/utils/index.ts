@@ -120,8 +120,8 @@ export function getMatchSizeLimit(matchSize: string): number {
 }
 
 export const SPORT_ALLOWED_SIZES: Record<string, string[]> = {
-  축구: ['6vs6', '7vs7', '11vs11'],
-  풋살: ['5vs5'],
+  축구: ['11vs11'],
+  풋살: ['5vs5', '6vs6', '7vs7'],
   농구: ['3vs3', '5vs5'],
   'e스포츠': ['1vs1', '3vs3', '5vs5'],
   테니스: ['단식', '복식'],
