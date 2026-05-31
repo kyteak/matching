@@ -162,6 +162,20 @@ export interface ExternalContest {
   created_at: string
 }
 
+export interface ContestResume {
+  id: string
+  user_id: string
+  full_name: string
+  department: string
+  interests: string
+  certifications: string
+  mindset: string
+  preferred_role: string
+  skill_level: SkillLevel
+  created_at: string
+  updated_at: string
+}
+
 export interface StaticContest {
   id: string
   title: string

@@ -10,7 +10,8 @@ import { Toast, useToast } from '@/components/Toast'
 import { Input } from '@/components/ui/Input'
 import { DEPARTMENTS } from '@/lib/utils'
 import { formatDateTime, maskStudentId } from '@/lib/utils'
-import { User, Star, Settings, LogOut } from 'lucide-react'
+import { User, Star, Settings, LogOut, FileText } from 'lucide-react'
+import { ContestResume } from '@/types/database'
 
 type Tab = 'info' | 'matches' | 'reviews' | 'settings'
 
@@ -27,6 +28,8 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
   const [editForm, setEditForm] = useState({ nickname: '', department: '', skill_level: '' })
+  const [resume, setResume] = useState<ContestResume | null>(null)
+  const [resumeOpen, setResumeOpen] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -47,6 +50,11 @@ export default function ProfilePage() {
           department: prof.department ?? '',
           skill_level: prof.skill_level ?? '',
         })
+      }
+      const resumeRes = await fetch('/api/contest-resume')
+      if (resumeRes.ok) {
+        const resumeData = await resumeRes.json()
+        setResume(resumeData)
       }
       setLoading(false)
     }
@@ -169,6 +177,33 @@ export default function ProfilePage() {
             <Button variant="outline" className="w-full" onClick={() => setEditing(true)}>
               프로필 수정
             </Button>
+
+            {/* 공모전 자기소개서 */}
+            <div className="bg-white rounded-2xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#1E3A5F]" />
+                  <span className="text-sm font-semibold text-[#1E3A5F]">공모전 자기소개서</span>
+                </div>
+                <button
+                  onClick={() => router.push('/contest/resume?from=profile')}
+                  className="text-xs text-[#FF6B35] font-medium"
+                >
+                  {resume ? '수정' : '작성하기'}
+                </button>
+              </div>
+              {resume ? (
+                <div className="space-y-2 text-sm">
+                  <ResumeRow label="관심분야" value={resume.interests} />
+                  <ResumeRow label="자신 있는 역할" value={resume.preferred_role} />
+                  <ResumeRow label="수준" value={resume.skill_level} />
+                  {resume.certifications && <ResumeRow label="자격증" value={resume.certifications} />}
+                  <ResumeRow label="마음가짐" value={resume.mindset} />
+                </div>
+              ) : (
+                <p className="text-xs text-gray-400">팀 모집 참여를 위한 자기소개서가 없습니다.</p>
+              )}
+            </div>
           </div>
         )}
 
@@ -279,6 +314,15 @@ function InfoRow({ label, value }: { label: string; value: string }) {
     <div className="flex justify-between items-center py-1">
       <span className="text-sm text-gray-500">{label}</span>
       <span className="text-sm font-medium text-[#1E3A5F]">{value}</span>
+    </div>
+  )
+}
+
+function ResumeRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex gap-2">
+      <span className="text-gray-400 shrink-0 w-24">{label}</span>
+      <span className="text-gray-700 font-medium break-all">{value}</span>
     </div>
   )
 }

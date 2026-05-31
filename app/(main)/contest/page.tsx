@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ExternalContest, StaticContest } from '@/types/database'
 import { getAllActiveContests, getContestsByRegion } from '@/data/contests'
 import { REGION_COLORS } from '@/lib/utils'
@@ -10,11 +10,23 @@ import { Bookmark, BookmarkCheck, ExternalLink, Trophy } from 'lucide-react'
 const REGIONS = ['전체', '충청북도', '충청남도', '세종특별자치시', '대전광역시']
 
 export default function ContestPage() {
+  const router = useRouter()
   const [tab, setTab] = useState<'static' | 'external'>('static')
   const [selectedRegion, setSelectedRegion] = useState('전체')
   const [externalContests, setExternalContests] = useState<ExternalContest[]>([])
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(false)
+
+  async function handleTeamMatchClick() {
+    const res = await fetch('/api/contest-resume')
+    if (!res.ok) { router.push('/login'); return }
+    const data = await res.json()
+    if (data) {
+      router.push('/contest/matches')
+    } else {
+      router.push('/contest/resume')
+    }
+  }
 
   const staticContests: StaticContest[] =
     selectedRegion === '전체' ? getAllActiveContests() : getContestsByRegion(selectedRegion)
@@ -173,13 +185,13 @@ export default function ContestPage() {
         )}
       </div>
 
-      <Link
-        href="/contest/matches"
+      <button
+        onClick={handleTeamMatchClick}
         className="fixed bottom-20 right-4 bg-[#FF6B35] text-white rounded-full px-4 py-3 shadow-lg flex items-center gap-2 text-sm font-semibold hover:bg-orange-500 transition-colors"
       >
         <Trophy className="w-4 h-4" />
         팀 모집
-      </Link>
+      </button>
     </div>
   )
 }
