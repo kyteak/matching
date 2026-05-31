@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Profile, Match, Review } from '@/types/database'
+import { Profile, Match, Review, SkillLevel } from '@/types/database'
 import { Button } from '@/components/ui/Button'
 import { StarRating } from '@/components/review/StarRating'
 import { Toast, useToast } from '@/components/Toast'
@@ -86,7 +86,7 @@ export default function ProfilePage() {
       .eq('id', profile!.id)
     setSaving(false)
     if (error) { addToast(error.message, 'error'); return }
-    setProfile((prev) => prev ? { ...prev, ...editForm } : prev)
+    setProfile((prev) => prev ? { ...prev, ...editForm, skill_level: editForm.skill_level as SkillLevel } : prev)
     setEditing(false)
     addToast('프로필이 저장되었습니다.', 'success')
   }

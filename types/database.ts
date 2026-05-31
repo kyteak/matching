@@ -60,6 +60,7 @@ export interface MessageRoom {
   participant_1: string
   participant_2: string
   created_at: string
+  updated_at: string
   match_applications?: MatchApplication
   participant1_profile?: Profile
   participant2_profile?: Profile
