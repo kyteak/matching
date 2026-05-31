@@ -3,7 +3,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  const { username, password, fullName, nickname, studentId, department } = body
+  const { username, password, fullName, studentId, department } = body
 
   const supabase = createAdminClient()
   const email = `${username}@cbnu.match`
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   const { error: profileError } = await supabase.from('profiles').insert({
     id: authData.user.id,
     username,
-    nickname,
+    nickname: username,
     full_name: fullName,
     student_id: studentId,
     skill_level: '초급',

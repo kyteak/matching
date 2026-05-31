@@ -12,7 +12,6 @@ interface FormData {
   password: string
   passwordConfirm: string
   fullName: string
-  nickname: string
   studentId: string
   department: string
 }
@@ -22,7 +21,6 @@ interface FormErrors {
   password?: string
   passwordConfirm?: string
   fullName?: string
-  nickname?: string
   studentId?: string
   department?: string
 }
@@ -31,11 +29,10 @@ export default function SignupPage() {
   const router = useRouter()
   const [form, setForm] = useState<FormData>({
     username: '', password: '', passwordConfirm: '',
-    fullName: '', nickname: '', studentId: '', department: '',
+    fullName: '', studentId: '', department: '',
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [usernameChecked, setUsernameChecked] = useState(false)
-  const [nicknameChecked, setNicknameChecked] = useState(false)
   const [loading, setLoading] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
@@ -43,7 +40,6 @@ export default function SignupPage() {
     setForm((prev) => ({ ...prev, [field]: value }))
     setErrors((prev) => ({ ...prev, [field]: undefined }))
     if (field === 'username') setUsernameChecked(false)
-    if (field === 'nickname') setNicknameChecked(false)
   }
 
   function validate(): boolean {
@@ -56,10 +52,8 @@ export default function SignupPage() {
       newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.'
     if (!/^[가-힣]{2,5}$/.test(form.fullName))
       newErrors.fullName = '올바른 이름을 입력해 주세요. (한글 2~5자)'
-    if (form.nickname.length < 2 || form.nickname.length > 10)
-      newErrors.nickname = '닉네임은 2~10자여야 합니다.'
-    if (!/^\d{8}$/.test(form.studentId)) {
-      newErrors.studentId = '학번은 8자리 숫자여야 합니다.'
+    if (!/^\d{10}$/.test(form.studentId)) {
+      newErrors.studentId = '학번은 10자리 숫자여야 합니다.'
     } else {
       const year = parseInt(form.studentId.slice(0, 4))
       if (year < 1990 || year > new Date().getFullYear())
@@ -82,24 +76,11 @@ export default function SignupPage() {
     }
   }
 
-  async function checkNickname() {
-    if (!form.nickname) return
-    const res = await fetch(`/api/auth/check-nickname?nickname=${form.nickname}`)
-    const { available } = await res.json()
-    if (!available) {
-      setErrors((prev) => ({ ...prev, nickname: '이미 사용 중인 닉네임입니다.' }))
-    } else {
-      setNicknameChecked(true)
-      setErrors((prev) => ({ ...prev, nickname: undefined }))
-    }
-  }
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSubmitError('')
     if (!validate()) return
     if (!usernameChecked) { setSubmitError('아이디 중복 확인을 해주세요.'); return }
-    if (!nicknameChecked) { setSubmitError('닉네임 중복 확인을 해주세요.'); return }
     setLoading(true)
     try {
       const res = await fetch('/api/auth/signup', {
@@ -162,29 +143,13 @@ export default function SignupPage() {
           required
         />
 
-        <div className="flex gap-2">
-          <div className="flex-1">
-            <Input
-              label="닉네임"
-              placeholder="2~10자"
-              value={form.nickname}
-              onChange={(e) => update('nickname', e.target.value)}
-              error={errors.nickname}
-              required
-            />
-          </div>
-          <Button type="button" variant="outline" size="sm" className="mt-6 flex-shrink-0" onClick={checkNickname}>
-            {nicknameChecked ? '✓' : '중복확인'}
-          </Button>
-        </div>
-
         <Input
           label="학번"
-          placeholder="8자리 숫자 (예: 20240001)"
+          placeholder="10자리 숫자 (예: 2024000001)"
           value={form.studentId}
-          onChange={(e) => update('studentId', e.target.value.replace(/\D/g, '').slice(0, 8))}
+          onChange={(e) => update('studentId', e.target.value.replace(/\D/g, '').slice(0, 10))}
           error={errors.studentId}
-          maxLength={8}
+          maxLength={10}
           required
         />
 
