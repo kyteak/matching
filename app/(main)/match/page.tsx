@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Match } from '@/types/database'
 import { MatchCard } from '@/components/match/MatchCard'
 import { FilterBar } from '@/components/match/FilterBar'
+import { FacilityBanner } from '@/components/match/FacilityBanner'
 import { Button } from '@/components/ui/Button'
 import { Toast, useToast } from '@/components/Toast'
 import { Plus } from 'lucide-react'
@@ -92,6 +93,8 @@ export default function MatchPage() {
         onSportChange={setSelectedSport}
         onLevelChange={setSelectedLevel}
       />
+
+      <FacilityBanner />
 
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
         {loading ? (
