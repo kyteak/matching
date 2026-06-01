@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Toast, useToast } from '@/components/Toast'
@@ -12,13 +12,14 @@ const TEAM_SIZES = [2, 3, 4, 5, 6]
 
 export default function ContestWritePage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toasts, addToast, removeToast } = useToast()
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
-    contestName: '',
+    contestName: searchParams.get('title') ?? '',
     contestCategory: '',
-    region: '',
-    deadline: '',
+    region: searchParams.get('region') ?? '',
+    deadline: searchParams.get('deadline') ?? '',
     teamSize: 3,
     description: '',
   })

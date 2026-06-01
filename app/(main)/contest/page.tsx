@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Contest } from '@/types/database'
 import { REGION_COLORS } from '@/lib/utils'
-import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, ExternalLink, Trophy } from 'lucide-react'
+import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, ExternalLink, Trophy, Users } from 'lucide-react'
 
 export default function ContestPage() {
-  const router = useRouter()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -31,17 +30,6 @@ export default function ContestPage() {
   useEffect(() => {
     updateArrows()
   }, [regions])
-
-  async function handleTeamMatchClick() {
-    const res = await fetch('/api/contest-resume')
-    if (!res.ok) { router.push('/login'); return }
-    const data = await res.json()
-    if (data) {
-      router.push('/contest/matches')
-    } else {
-      router.push('/contest/resume')
-    }
-  }
 
   useEffect(() => {
     const saved = localStorage.getItem('contest-bookmarks')
@@ -111,7 +99,7 @@ export default function ContestPage() {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-40 space-y-3">
+      <div className="flex-1 overflow-y-auto px-4 py-4 pb-4 space-y-3">
         {loading ? (
           <div className="flex justify-center py-16">
             <div className="animate-spin w-8 h-8 border-4 border-[#1E3A5F] border-t-transparent rounded-full" />
@@ -149,32 +137,32 @@ export default function ContestPage() {
                     }
                   </button>
                 </div>
-                {c.url && (
-                  <a
-                    href={c.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 flex items-center gap-1 text-xs text-[#1E3A5F] font-medium"
+                <div className="mt-3 flex items-center gap-3">
+                  {c.url && (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-xs text-[#1E3A5F] font-medium"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      자세히 보기
+                    </a>
+                  )}
+                  <Link
+                    href={`/contest/write?title=${encodeURIComponent(c.title)}&region=${encodeURIComponent(c.region ?? '')}&deadline=${encodeURIComponent(c.end_date ?? '')}`}
+                    className="flex items-center gap-1 text-xs text-white bg-[#FF6B35] px-2.5 py-1 rounded-full font-medium hover:bg-orange-500 transition-colors"
                   >
-                    <ExternalLink className="w-3 h-3" />
-                    자세히 보기
-                  </a>
-                )}
+                    <Users className="w-3 h-3" />
+                    팀 만들기
+                  </Link>
+                </div>
               </div>
             )
           })
         )}
       </div>
 
-      <div className="fixed bottom-16 left-0 right-0 max-w-lg mx-auto px-4 pb-2">
-        <button
-          onClick={handleTeamMatchClick}
-          className="w-full bg-[#FF6B35] hover:bg-orange-500 active:bg-orange-600 text-white rounded-2xl py-4 flex items-center justify-center gap-2 font-bold text-base shadow-lg transition-colors"
-        >
-          <Trophy className="w-5 h-5" />
-          공모전 팀 모집 참여하기
-        </button>
-      </div>
     </div>
   )
 }
