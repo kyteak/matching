@@ -1,9 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import { ContestMatch } from '@/types/database'
 import { REGION_COLORS, formatDate } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
-import { Calendar, MapPin, Users } from 'lucide-react'
+import { Calendar, Users } from 'lucide-react'
 
 interface ContestMatchCardProps {
   contest: ContestMatch
@@ -56,21 +57,29 @@ export function ContestMatchCard({
         </div>
       </div>
 
-      {!isOwner && !isClosed && onApply && (
-        <Button
-          variant={hasApplied ? 'secondary' : 'primary'}
-          size="sm"
-          className="w-full"
-          disabled={hasApplied || remaining <= 0}
-          loading={applying}
-          onClick={() => !hasApplied && onApply(contest.id)}
+      <div className="flex gap-2">
+        <Link
+          href={`/contest/matches/${contest.id}`}
+          className="flex-1 text-center text-xs py-2 rounded-lg border border-[#1E3A5F] text-[#1E3A5F] font-medium hover:bg-blue-50 transition-colors"
         >
-          {hasApplied ? '신청 완료 ✓' : remaining <= 0 ? '모집 마감' : '팀원 신청'}
-        </Button>
-      )}
-      {isOwner && (
-        <div className="text-xs text-center text-gray-400 py-1">내가 작성한 모집</div>
-      )}
+          상세 보기
+        </Link>
+        {!isOwner && !isClosed && onApply && (
+          <Button
+            variant={hasApplied ? 'secondary' : 'primary'}
+            size="sm"
+            className="flex-1"
+            disabled={hasApplied || remaining <= 0}
+            loading={applying}
+            onClick={() => !hasApplied && onApply(contest.id)}
+          >
+            {hasApplied ? '신청 완료 ✓' : remaining <= 0 ? '모집 마감' : '팀원 신청'}
+          </Button>
+        )}
+        {isOwner && (
+          <div className="flex-1 text-xs text-center text-gray-400 py-2">내가 작성한 모집</div>
+        )}
+      </div>
     </div>
   )
 }
