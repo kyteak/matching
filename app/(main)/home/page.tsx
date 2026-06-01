@@ -1,9 +1,9 @@
-'use client'
-
 import Link from 'next/link'
 import { Swords, Trophy, ChevronRight } from 'lucide-react'
 
-export default function HubPage() {
+export const dynamic = 'force-dynamic'
+
+export default function HomePage() {
   return (
     <div className="px-4 py-10">
       <p className="text-gray-400 text-sm mb-8 text-center">어떤 활동을 하시겠어요?</p>

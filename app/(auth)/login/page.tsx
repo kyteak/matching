@@ -28,7 +28,7 @@ export default function LoginPage() {
         setError('아이디 또는 비밀번호가 올바르지 않습니다.')
         return
       }
-      router.push('/match')
+      router.push('/home')
       router.refresh()
     } finally {
       setLoading(false)
