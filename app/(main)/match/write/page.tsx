@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Input } from '@/components/ui/Input'
-import { Button } from '@/components/ui/Button'
 import { Toast, useToast } from '@/components/Toast'
 import { SPORT_ALLOWED_SIZES } from '@/lib/utils'
 
