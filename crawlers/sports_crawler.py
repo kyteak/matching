@@ -188,7 +188,23 @@ def upsert_slots(slots: list) -> int:
         return 0
 
 
+def delete_past_reservations():
+    today = get_kst_now().date().isoformat()
+    url = f"{SUPABASE_URL}/rest/v1/sports_reservations?reservation_date=lt.{today}"
+    headers = {
+        'apikey': SUPABASE_KEY,
+        'Authorization': f'Bearer {SUPABASE_KEY}',
+    }
+    try:
+        resp = requests.delete(url, headers=headers)
+        resp.raise_for_status()
+        logger.info(f"지난 예약 데이터 삭제 완료 ({today} 이전)")
+    except Exception as e:
+        logger.error(f"지난 예약 삭제 오류: {e}")
+
+
 def crawl_all():
+    delete_past_reservations()
     if not login():
         logger.error("로그인 실패로 크롤링 중단")
         return

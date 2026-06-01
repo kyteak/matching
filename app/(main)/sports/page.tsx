@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { SportsReservation } from '@/types/database'
-import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
+import { CalendarDays, ChevronRight } from 'lucide-react'
 
 const FACILITIES = ['전체', '풋살A', '풋살B', '농구A', '농구B']
 
@@ -28,14 +28,17 @@ function addDays(d: Date, n: number) {
   return r
 }
 
+const TODAY = formatDate(new Date())
+
 export default function SportsPage() {
   const [selectedFacility, setSelectedFacility] = useState('전체')
-  const [baseDate, setBaseDate] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()))
+  const [offset, setOffset] = useState(0)
+  const [selectedDate, setSelectedDate] = useState(TODAY)
   const [reservations, setReservations] = useState<SportsReservation[]>([])
   const [loading, setLoading] = useState(true)
 
-  const weekDates = Array.from({ length: 7 }, (_, i) => addDays(baseDate, i - 3))
+  // 오늘부터 7일씩 앞으로만
+  const weekDates = Array.from({ length: 7 }, (_, i) => addDays(new Date(TODAY), offset + i))
 
   useEffect(() => {
     setLoading(true)
@@ -63,20 +66,29 @@ export default function SportsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      {/* Date picker */}
       <div className="bg-white border-b sticky top-14 z-10">
         <div className="flex items-center px-2 py-2 gap-1">
-          <button
-            onClick={() => setBaseDate((d) => addDays(d, -7))}
-            className="p-1 text-gray-400 hover:text-gray-600"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+          {/* 뒤로가기 — offset > 0 일 때만 표시 */}
+          <div className="w-7">
+            {offset > 0 && (
+              <button
+                onClick={() => {
+                  const newOffset = offset - 7
+                  setOffset(newOffset)
+                  setSelectedDate(formatDate(addDays(new Date(TODAY), newOffset)))
+                }}
+                className="p-1 text-gray-400 hover:text-gray-600"
+              >
+                <CalendarDays className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+
           <div className="flex-1 overflow-x-auto flex gap-1 scrollbar-hide">
             {weekDates.map((d) => {
               const str = formatDate(d)
               const isSelected = str === selectedDate
-              const today = str === formatDate(new Date())
+              const isToday = str === TODAY
               const dayIdx = d.getDay()
               return (
                 <button
@@ -85,28 +97,32 @@ export default function SportsPage() {
                   className={`flex-shrink-0 w-11 flex flex-col items-center py-1.5 rounded-xl text-xs transition-colors ${
                     isSelected
                       ? 'bg-[#1E3A5F] text-white'
-                      : today
+                      : isToday
                       ? 'bg-blue-50 text-[#1E3A5F]'
                       : 'text-gray-500'
                   }`}
                 >
                   <span className={`font-medium ${dayIdx === 0 ? 'text-red-400' : dayIdx === 6 ? 'text-blue-400' : ''} ${isSelected ? '!text-white' : ''}`}>
-                    {dayNames[dayIdx]}
+                    {isToday ? '오늘' : dayNames[dayIdx]}
                   </span>
                   <span className="font-bold text-sm">{d.getDate()}</span>
                 </button>
               )
             })}
           </div>
+
           <button
-            onClick={() => setBaseDate((d) => addDays(d, 7))}
+            onClick={() => {
+              const newOffset = offset + 7
+              setOffset(newOffset)
+              setSelectedDate(formatDate(addDays(new Date(TODAY), newOffset)))
+            }}
             className="p-1 text-gray-400 hover:text-gray-600"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Facility filter */}
         <div className="overflow-x-auto flex gap-2 px-4 pb-3 scrollbar-hide">
           {FACILITIES.map((f) => (
             <button
@@ -161,7 +177,7 @@ function EmptyState() {
     <div className="text-center py-16 text-gray-400">
       <CalendarDays className="w-12 h-12 mx-auto mb-3 opacity-30" />
       <p className="font-medium">예약 현황이 없습니다.</p>
-      <p className="text-xs mt-1">크롤러가 데이터를 수집 중이거나 해당 날짜에 정보가 없습니다.</p>
+      <p className="text-xs mt-1">해당 날짜에 예약 정보가 없습니다.</p>
     </div>
   )
 }
