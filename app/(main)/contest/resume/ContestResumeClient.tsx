@@ -35,10 +35,12 @@ export default function ContestResumeClient() {
   const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
   const [fromProfile, setFromProfile] = useState(false)
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     setFromProfile(params.get('from') === 'profile')
+    setRedirectUrl(params.get('redirect'))
   }, [])
 
   useEffect(() => {
@@ -96,7 +98,9 @@ export default function ContestResumeClient() {
       const data = await res.json()
       if (!res.ok) { addToast(data.error, 'error'); return }
 
-      if (fromProfile) {
+      if (redirectUrl) {
+        router.push(redirectUrl)
+      } else if (fromProfile) {
         addToast('자기소개서가 저장되었습니다.', 'success')
         setTimeout(() => router.back(), 800)
       } else {

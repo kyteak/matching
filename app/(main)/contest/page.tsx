@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Contest } from '@/types/database'
 import { REGION_COLORS } from '@/lib/utils'
 import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, ExternalLink, Trophy, Users } from 'lucide-react'
 
 export default function ContestPage() {
+  const router = useRouter()
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(false)
@@ -30,6 +31,18 @@ export default function ContestPage() {
   useEffect(() => {
     updateArrows()
   }, [regions])
+
+  async function handleTeamCreate(c: Contest) {
+    const writeUrl = `/contest/write?title=${encodeURIComponent(c.title)}&region=${encodeURIComponent(c.region ?? '')}&deadline=${encodeURIComponent(c.end_date ?? '')}`
+    const res = await fetch('/api/contest-resume')
+    if (!res.ok) { router.push('/login'); return }
+    const data = await res.json()
+    if (data) {
+      router.push(writeUrl)
+    } else {
+      router.push(`/contest/resume?redirect=${encodeURIComponent(writeUrl)}`)
+    }
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem('contest-bookmarks')
@@ -149,13 +162,13 @@ export default function ContestPage() {
                       자세히 보기
                     </a>
                   )}
-                  <Link
-                    href={`/contest/write?title=${encodeURIComponent(c.title)}&region=${encodeURIComponent(c.region ?? '')}&deadline=${encodeURIComponent(c.end_date ?? '')}`}
+                  <button
+                    onClick={() => handleTeamCreate(c)}
                     className="flex items-center gap-1 text-xs text-white bg-[#FF6B35] px-2.5 py-1 rounded-full font-medium hover:bg-orange-500 transition-colors"
                   >
                     <Users className="w-3 h-3" />
                     팀 만들기
-                  </Link>
+                  </button>
                 </div>
               </div>
             )
