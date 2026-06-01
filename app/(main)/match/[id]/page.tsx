@@ -273,13 +273,11 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
 
       {isAuthor ? (
         <>
-          {pendingApps.length > 0 && (
-            <PendingApplications
-              applications={pendingApps}
-              onAccept={handleAccept}
-              onReject={handleReject}
-            />
-          )}
+          <PendingApplications
+            applications={applications}
+            onAccept={handleAccept}
+            onReject={handleReject}
+          />
           <div className="flex gap-2">
             <Button
               variant="outline"
@@ -301,7 +299,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           </div>
         </>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {authorExists === false && (
             <Button variant="outline" className="w-full" onClick={handleClaim} loading={claiming}>
               내 매치로 가져오기
@@ -324,6 +322,12 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
           )}
           {match.status !== '모집중' && !hasApplied && (
             <p className="text-center text-sm text-gray-400 py-3">모집이 마감된 매치입니다.</p>
+          )}
+          {hasApplied && (
+            <PendingApplications
+              applications={applications}
+              readOnly
+            />
           )}
         </div>
       )}
