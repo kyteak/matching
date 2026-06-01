@@ -123,9 +123,10 @@ export default function MatchPage() {
 
       <Link
         href="/match/write"
-        className="fixed bottom-20 right-4 bg-[#FF6B35] text-white rounded-full p-4 shadow-lg hover:bg-orange-500 transition-colors"
+        className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-[#FF6B35] text-white rounded-full px-6 py-3 shadow-xl hover:bg-orange-500 transition-colors flex items-center gap-2 font-bold text-base whitespace-nowrap"
       >
-        <Plus className="w-6 h-6" />
+        <Plus className="w-5 h-5" />
+        매치 만들기
       </Link>
 
       <Toast toasts={toasts} onRemove={removeToast} />
