@@ -131,10 +131,10 @@ export default function MatchPage() {
 
       <Link
         href="/sports"
-        className="fixed bottom-20 right-4 bg-[#1E3A5F] text-white rounded-full p-3.5 shadow-xl hover:bg-blue-900 transition-colors flex flex-col items-center gap-0.5"
+        className="fixed bottom-20 right-4 bg-[#1E3A5F] text-white rounded-full p-4 shadow-xl hover:bg-blue-900 transition-colors flex flex-col items-center gap-1"
       >
-        <CalendarDays className="w-5 h-5" />
-        <span className="text-[10px] font-medium">시설</span>
+        <CalendarDays className="w-6 h-6" />
+        <span className="text-xs font-medium">시설</span>
       </Link>
 
       <Toast toasts={toasts} onRemove={removeToast} />
