@@ -131,8 +131,13 @@ export default function ContestResumeClient() {
         <h1 className="text-lg font-bold text-[#1E3A5F]">공모전 자기소개서</h1>
       </div>
       {!fromProfile && (
-        <p className="text-xs text-gray-400 mb-5">팀 모집에 참여하려면 자기소개서를 먼저 작성해주세요.</p>
+        <p className="text-xs text-gray-400 mb-3">팀 모집에 참여하려면 자기소개서를 먼저 작성해주세요.</p>
       )}
+      <div className="bg-blue-50 border border-blue-100 rounded-xl px-3 py-2.5 mb-5">
+        <p className="text-xs text-blue-700 leading-relaxed">
+          📋 이 자기소개서는 공모전 팀 모집 시 <span className="font-semibold">팀장 및 팀원들에게 공개</span>됩니다. 실력과 역할을 있는 그대로 솔직하게 작성해주세요.
+        </p>
+      </div>
 
       <div className="space-y-5 mt-4">
         <Input
