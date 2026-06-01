@@ -1,18 +1,36 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Contest } from '@/types/database'
 import { REGION_COLORS } from '@/lib/utils'
-import { Bookmark, BookmarkCheck, ExternalLink, Trophy } from 'lucide-react'
+import { Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, ExternalLink, Trophy } from 'lucide-react'
 
 export default function ContestPage() {
   const router = useRouter()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
   const [regions, setRegions] = useState<string[]>([])
   const [selectedRegion, setSelectedRegion] = useState('전체')
   const [contests, setContests] = useState<Contest[]>([])
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
+
+  function updateArrows() {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 0)
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1)
+  }
+
+  function scroll(dir: 'left' | 'right') {
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -120 : 120, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    updateArrows()
+  }, [regions])
 
   async function handleTeamMatchClick() {
     const res = await fetch('/api/contest-resume')
@@ -57,20 +75,40 @@ export default function ContestPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="overflow-x-auto flex gap-2 px-4 py-3 bg-white border-b scrollbar-hide flex-shrink-0 sticky top-14 z-10">
-        {['전체', ...regions].map((r) => (
-          <button
-            key={r}
-            onClick={() => setSelectedRegion(r)}
-            className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
-              selectedRegion === r
-                ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
-                : 'bg-white text-gray-600 border-gray-300'
-            }`}
-          >
-            {r}
-          </button>
-        ))}
+      <div className="flex items-center bg-white border-b sticky top-14 z-10">
+        <button
+          onClick={() => scroll('left')}
+          disabled={!canScrollLeft}
+          className="flex-shrink-0 px-1 py-3 text-gray-400 disabled:opacity-20 transition-opacity"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <div
+          ref={scrollRef}
+          onScroll={updateArrows}
+          className="flex-1 overflow-x-auto flex gap-2 py-3 scrollbar-hide"
+        >
+          {['전체', ...regions].map((r) => (
+            <button
+              key={r}
+              onClick={() => setSelectedRegion(r)}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
+                selectedRegion === r
+                  ? 'bg-[#1E3A5F] text-white border-[#1E3A5F]'
+                  : 'bg-white text-gray-600 border-gray-300'
+              }`}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={() => scroll('right')}
+          disabled={!canScrollRight}
+          className="flex-shrink-0 px-1 py-3 text-gray-400 disabled:opacity-20 transition-opacity"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-4 pb-40 space-y-3">
