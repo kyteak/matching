@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/Input'
 import { PendingApplications } from '@/components/match/PendingApplications'
 import { Toast, useToast } from '@/components/Toast'
 import { formatDateTime, SPORT_COLORS, LEVEL_COLORS, SPORT_ALLOWED_SIZES } from '@/lib/utils'
-import { MapPin, Calendar, ChevronLeft, Trash2, Pencil } from 'lucide-react'
+import { MapPin, Calendar, ChevronLeft, Trash2, Pencil, User } from 'lucide-react'
 
 const SPORTS = ['축구', '풋살', '농구', '테니스', '배드민턴', '탁구', 'e스포츠']
 const LEVELS = ['초급', '중급', '고수']
@@ -255,6 +255,15 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
             <MapPin className="w-4 h-4 text-[#1E3A5F]" />
             <span>{match.location}</span>
           </div>
+          {match.profiles && (
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4 text-[#1E3A5F]" />
+              <span>
+                {match.profiles.full_name}
+                {match.profiles.department ? ` · ${match.profiles.department}` : ''}
+              </span>
+            </div>
+          )}
         </div>
 
         {match.description && (

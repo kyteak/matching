@@ -6,7 +6,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('matches')
-    .select('*, profiles(id, nickname, skill_level, department)')
+    .select('*, profiles(id, nickname, full_name, skill_level, department)')
     .eq('id', id)
     .single()
   if (error) return NextResponse.json({ error: error.message }, { status: 404 })
