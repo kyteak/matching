@@ -8,10 +8,10 @@ import { Notification } from '@/types/database'
 
 export function Header() {
   const [unreadCount, setUnreadCount] = useState(0)
-  const supabase = createClient()
 
   useEffect(() => {
     let userId: string
+    const supabase = createClient()
 
     async function init() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -43,7 +43,8 @@ export function Header() {
       return () => { supabase.removeChannel(channel) }
     }
 
-    init()
+    const cleanup = init()
+    return () => { cleanup.then((fn) => fn?.()) }
   }, [])
 
   return (
