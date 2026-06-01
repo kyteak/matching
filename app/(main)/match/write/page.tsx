@@ -105,8 +105,8 @@ export default function MatchWritePage() {
                   onClick={() => set('matchSize', s)}
                   className={`py-3 rounded-xl text-sm font-semibold border-2 transition-colors ${
                     form.matchSize === s
-                      ? 'bg-[#FF6B35] text-white border-[#FF6B35]'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#FF6B35]'
+                      ? 'bg-[#C41230] text-white border-[#C41230]'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#C41230]'
                   }`}
                 >
                   {s}

@@ -89,7 +89,7 @@ export default function ContestMatchesClient() {
 
       <Link
         href="/contest/write"
-        className="fixed bottom-20 right-4 bg-[#FF6B35] text-white rounded-full p-4 shadow-lg hover:bg-orange-500 transition-colors"
+        className="fixed bottom-20 right-4 bg-[#C41230] text-white rounded-full p-4 shadow-lg hover:bg-red-800 transition-colors"
       >
         <Plus className="w-6 h-6" />
       </Link>

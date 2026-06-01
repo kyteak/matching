@@ -194,7 +194,7 @@ export default function MatchPage() {
 
           <Link
             href="/match/write"
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#FF6B35] text-white rounded-full px-6 py-3 shadow-xl hover:bg-orange-500 transition-colors flex items-center gap-2 font-bold text-base whitespace-nowrap"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#C41230] text-white rounded-full px-6 py-3 shadow-xl hover:bg-red-800 transition-colors flex items-center gap-2 font-bold text-base whitespace-nowrap"
           >
             <Plus className="w-5 h-5" />
             매치 만들기

@@ -139,7 +139,7 @@ export default function ContestChatPage({ params }: { params: Promise<{ roomId: 
         <button
           onClick={sendMessage}
           disabled={!text.trim() || sending}
-          className="w-10 h-10 bg-[#FF6B35] rounded-full flex items-center justify-center disabled:opacity-40"
+          className="w-10 h-10 bg-[#C41230] rounded-full flex items-center justify-center disabled:opacity-40"
         >
           <Send className="w-4 h-4 text-white" />
         </button>

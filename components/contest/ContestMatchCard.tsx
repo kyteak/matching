@@ -28,7 +28,7 @@ export function ContestMatchCard({
 
   const remainingColor =
     remaining <= 1 ? 'bg-red-100 text-red-600' :
-    remaining <= 2 ? 'bg-orange-100 text-orange-600' :
+    remaining <= 2 ? 'bg-red-100 text-red-700' :
     'bg-green-100 text-green-700'
 
   return (

@@ -100,7 +100,7 @@ export function FilterBar({
             className={cn(
               'px-3 py-1 rounded-full text-xs font-medium transition-colors',
               selectedLevel === level
-                ? 'bg-[#FF6B35] text-white'
+                ? 'bg-[#C41230] text-white'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             )}
           >

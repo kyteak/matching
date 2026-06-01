@@ -136,7 +136,7 @@ export default function ProfilePage() {
             <p className="text-xl font-bold">{profile.nickname}</p>
             <p className="text-sm text-white/70">@{profile.username}</p>
             {profile.skill_level && (
-              <span className="text-xs text-[#FF6B35] font-medium">{profile.skill_level}</span>
+              <span className="text-xs text-[#C41230] font-medium">{profile.skill_level}</span>
             )}
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                 </div>
                 <button
                   onClick={() => router.push('/contest/resume?from=profile')}
-                  className="text-xs text-[#FF6B35] font-medium"
+                  className="text-xs text-[#C41230] font-medium"
                 >
                   {resume ? '수정' : '작성하기'}
                 </button>

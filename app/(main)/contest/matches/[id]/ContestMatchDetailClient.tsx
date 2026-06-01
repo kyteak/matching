@@ -94,7 +94,7 @@ export default function ContestMatchDetailClient() {
           <span className={`text-xs px-2 py-1 rounded-full font-bold ${
             isClosed ? 'bg-gray-100 text-gray-500' :
             remaining <= 1 ? 'bg-red-100 text-red-600' :
-            remaining <= 2 ? 'bg-orange-100 text-orange-600' :
+            remaining <= 2 ? 'bg-red-100 text-red-700' :
             'bg-green-100 text-green-700'
           }`}>
             {isClosed ? '마감' : `${remaining}자리 남음`}
@@ -173,7 +173,7 @@ export default function ContestMatchDetailClient() {
                 className="w-full bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-[#FF6B35]" />
+                  <FileText className="w-4 h-4 text-[#C41230]" />
                   <div className="text-left">
                     <p className="text-sm font-semibold text-gray-800">{r.profile?.nickname ?? r.full_name}</p>
                     <p className="text-xs text-gray-400">{r.profile?.department ?? r.department}</p>
@@ -215,7 +215,7 @@ function ResumeDetail({ resume }: { resume: ContestResume }) {
       <Row label="공모전 마음가짐" value={resume.mindset} />
       <div className="flex items-center gap-2">
         <span className="text-xs text-gray-500 w-20 shrink-0">역할</span>
-        <span className="text-xs bg-[#FF6B35] text-white px-2 py-0.5 rounded-full font-medium">{resume.preferred_role}</span>
+        <span className="text-xs bg-[#C41230] text-white px-2 py-0.5 rounded-full font-medium">{resume.preferred_role}</span>
       </div>
       <div className="flex items-center gap-2">
         <span className="text-xs text-gray-500 w-20 shrink-0">수준</span>
@@ -227,7 +227,7 @@ function ResumeDetail({ resume }: { resume: ContestResume }) {
                 (resume.skill_level === '초급' && l === '초급') ||
                 (resume.skill_level === '중급' && (l === '초급' || l === '중급')) ||
                 (resume.skill_level === '고수')
-                  ? 'text-[#FF6B35] fill-[#FF6B35]'
+                  ? 'text-[#C41230] fill-[#C41230]'
                   : 'text-gray-200 fill-gray-200'
               }`}
             />

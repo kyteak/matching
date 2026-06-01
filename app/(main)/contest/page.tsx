@@ -110,7 +110,7 @@ export default function ContestPage() {
         <button
           onClick={() => setTab('contest')}
           className={`flex-1 py-3 text-sm font-semibold transition-colors ${
-            tab === 'contest' ? 'text-[#FF6B35] border-b-2 border-[#FF6B35]' : 'text-gray-400'
+            tab === 'contest' ? 'text-[#C41230] border-b-2 border-[#C41230]' : 'text-gray-400'
           }`}
         >
           공모전
@@ -121,7 +121,7 @@ export default function ContestPage() {
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
           {chatLoading ? (
             <div className="flex justify-center py-16">
-              <div className="animate-spin w-8 h-8 border-4 border-[#FF6B35] border-t-transparent rounded-full" />
+              <div className="animate-spin w-8 h-8 border-4 border-[#C41230] border-t-transparent rounded-full" />
             </div>
           ) : chatRooms.length === 0 ? (
             <div className="text-center py-16 text-gray-400">
@@ -136,7 +136,7 @@ export default function ContestPage() {
                 href={`/messages/contest/${room.id}`}
                 className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"
               >
-                <div className="w-10 h-10 bg-[#FF6B35] rounded-full flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-[#C41230] rounded-full flex items-center justify-center shrink-0">
                   <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -169,7 +169,7 @@ export default function ContestPage() {
                   onClick={() => setSelectedRegion(r)}
                   className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                     selectedRegion === r
-                      ? 'bg-[#FF6B35] text-white border-[#FF6B35]'
+                      ? 'bg-[#C41230] text-white border-[#C41230]'
                       : 'bg-white text-gray-600 border-gray-300'
                   }`}
                 >
@@ -189,7 +189,7 @@ export default function ContestPage() {
           <div className="flex-1 overflow-y-auto px-4 py-4 pb-4 space-y-3">
             {loading ? (
               <div className="flex justify-center py-16">
-                <div className="animate-spin w-8 h-8 border-4 border-[#FF6B35] border-t-transparent rounded-full" />
+                <div className="animate-spin w-8 h-8 border-4 border-[#C41230] border-t-transparent rounded-full" />
               </div>
             ) : contests.length === 0 ? (
               <EmptyState />
@@ -219,7 +219,7 @@ export default function ContestPage() {
                       </div>
                       <button onClick={() => toggleBookmark(c.id)} className="flex-shrink-0 mt-1">
                         {bookmarks.has(c.id)
-                          ? <BookmarkCheck className="w-5 h-5 text-[#FF6B35]" />
+                          ? <BookmarkCheck className="w-5 h-5 text-[#C41230]" />
                           : <Bookmark className="w-5 h-5 text-gray-300" />
                         }
                       </button>
@@ -238,7 +238,7 @@ export default function ContestPage() {
                       )}
                       <button
                         onClick={() => handleTeamCreate(c)}
-                        className="flex items-center gap-1 text-xs text-white bg-[#FF6B35] px-2.5 py-1 rounded-full font-medium hover:bg-orange-500 transition-colors"
+                        className="flex items-center gap-1 text-xs text-white bg-[#C41230] px-2.5 py-1 rounded-full font-medium hover:bg-red-800 transition-colors"
                       >
                         <Users className="w-3 h-3" />
                         팀 만들기

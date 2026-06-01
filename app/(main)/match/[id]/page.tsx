@@ -374,7 +374,7 @@ export default function MatchDetailPage({ params }: { params: Promise<{ id: stri
                       onClick={() => setEdit('matchSize', s)}
                       className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                         editForm.matchSize === s
-                          ? 'bg-[#FF6B35] text-white border-[#FF6B35]'
+                          ? 'bg-[#C41230] text-white border-[#C41230]'
                           : 'bg-white text-gray-600 border-gray-300'
                       }`}
                     >

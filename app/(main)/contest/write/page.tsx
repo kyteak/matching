@@ -93,8 +93,8 @@ export default function ContestWritePage() {
                 onClick={() => set('region', r)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                   form.region === r
-                    ? 'bg-[#FF6B35] text-white border-[#FF6B35]'
-                    : 'bg-white text-gray-600 border-gray-300 hover:border-[#FF6B35]'
+                    ? 'bg-[#C41230] text-white border-[#C41230]'
+                    : 'bg-white text-gray-600 border-gray-300 hover:border-[#C41230]'
                 }`}
               >
                 {r}

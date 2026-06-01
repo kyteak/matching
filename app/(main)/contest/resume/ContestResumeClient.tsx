@@ -202,7 +202,7 @@ export default function ContestResumeClient() {
                 onClick={() => set('preferred_role', r)}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                   form.preferred_role === r
-                    ? 'bg-[#FF6B35] text-white border-[#FF6B35]'
+                    ? 'bg-[#C41230] text-white border-[#C41230]'
                     : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                 }`}
               >
