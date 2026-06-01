@@ -9,7 +9,7 @@ import { FilterBar } from '@/components/match/FilterBar'
 import { FacilityBanner } from '@/components/match/FacilityBanner'
 import { Button } from '@/components/ui/Button'
 import { Toast, useToast } from '@/components/Toast'
-import { Plus } from 'lucide-react'
+import { Plus, CalendarDays } from 'lucide-react'
 
 export default function MatchPage() {
   const [matches, setMatches] = useState<Match[]>([])
@@ -127,6 +127,14 @@ export default function MatchPage() {
       >
         <Plus className="w-5 h-5" />
         매치 만들기
+      </Link>
+
+      <Link
+        href="/sports"
+        className="fixed bottom-20 right-4 bg-[#1E3A5F] text-white rounded-full p-3.5 shadow-xl hover:bg-blue-900 transition-colors flex flex-col items-center gap-0.5"
+      >
+        <CalendarDays className="w-5 h-5" />
+        <span className="text-[10px] font-medium">시설</span>
       </Link>
 
       <Toast toasts={toasts} onRemove={removeToast} />
