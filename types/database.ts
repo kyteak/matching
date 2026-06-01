@@ -162,6 +162,32 @@ export interface ExternalContest {
   created_at: string
 }
 
+export interface Contest {
+  id: string
+  title: string
+  organizer: string | null
+  field: string | null
+  start_date: string | null
+  end_date: string
+  url: string
+  thumbnail_url: string | null
+  is_active: boolean
+  source: string | null
+  region: string | null
+  last_crawled_at: string | null
+  created_at: string
+}
+
+export interface SportsReservation {
+  id: string
+  facility: string
+  reservation_date: string
+  start_time: string
+  end_time: string
+  status: 'available' | 'reserved'
+  last_crawled_at: string | null
+}
+
 export interface ContestResume {
   id: string
   user_id: string

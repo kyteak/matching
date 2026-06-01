@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Trophy, Swords, MessageSquare, User } from 'lucide-react'
+import { Trophy, Swords, MessageSquare, User, CalendarDays } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
   { href: '/match', label: '매치', icon: Swords },
   { href: '/contest', label: '공모전', icon: Trophy },
+  { href: '/sports', label: '시설', icon: CalendarDays },
   { href: '/messages', label: '메시지', icon: MessageSquare },
   { href: '/profile', label: '내 정보', icon: User },
 ]
