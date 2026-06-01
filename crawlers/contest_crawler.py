@@ -62,49 +62,48 @@ def map_field(title: str, category: str = '') -> str:
                 return field
     return 'academic'
 
-def is_target_region(contest: dict) -> bool:
-    organizer = contest.get('organizer', '') or ''
-    title = contest.get('title', '') or ''
-    text_to_check = f"{title} {organizer}".lower()
-
-    exclude_keywords = [
-        '서울', '경기', '인천', '강원', '부산', '대구', '울산', '광주',
-        '경북', '경상북도', '경남', '경상남도', '전북', '전라북도', '전남', '전라남도', '제주', '전국'
-    ]
-    if any(kw in text_to_check for kw in exclude_keywords):
-        if not any(kw in text_to_check for kw in ['충북', '충남', '대전', '세종', '충청']):
-            return False
-
-    target_keywords = [
-        '대전', '세종', '충남', '충청남도', '충북', '충청북도', '충청',
-        '청주', '충주', '천안', '아산', '공주', '제천', '음성', '진천', '괴산', '증평', '보은', '옥천', '영동', '단양',
-        '홍성', '예산', '태안', '당진', '서산', '보령', '서천', '부여', '논산', '계룡', '금산',
-        '충북대', '충남대', '한밭대', '목원대', '배재대', '대전대', '우송대', '서원대', '청주대', '청주교대', '공주교대',
-        '건양대', '순천향대', '백석대', '선문대', '호서대', '남서울대', '극동대', '중원대', '유원대', '세명대'
-    ]
-    for kw in target_keywords:
-        if kw in text_to_check:
-            return True
-    return False
-
 def _extract_region(contest: dict) -> str:
     organizer = contest.get('organizer', '') or ''
     title = contest.get('title', '') or ''
-    text = f"{title} {organizer}".lower()
+    text = f"{title} {organizer}"
 
-    if any(kw in text for kw in ['충북', '충청북도', '청주', '충주', '제천', '음성', '진천', '괴산', '증평', '보은', '옥천', '영동', '단양', '충북대', '서원대', '청주대', '세명대', '중원대', '유원대', '극동대']):
-        return '충청북도'
-    if any(kw in text for kw in ['충남', '충청남도', '천안', '아산', '공주', '홍성', '예산', '태안', '당진', '서산', '보령', '서천', '부여', '논산', '계룡', '금산', '충남대', '건양대', '순천향대', '백석대', '선문대', '호서대', '남서울대']):
-        return '충청남도'
+    if any(kw in text for kw in ['서울', '서울특별시']):
+        return '서울특별시'
+    if any(kw in text for kw in ['경기', '경기도', '수원', '성남', '고양', '용인', '부천', '안산', '안양', '남양주', '화성', '평택', '의정부', '시흥', '파주', '광명', '김포', '군포', '하남', '오산', '이천', '양주', '구리', '안성', '포천', '의왕', '여주', '동두천', '과천', '가평', '양평', '연천']):
+        return '경기도'
+    if any(kw in text for kw in ['인천', '인천광역시']):
+        return '인천광역시'
+    if any(kw in text for kw in ['부산', '부산광역시']):
+        return '부산광역시'
+    if any(kw in text for kw in ['대구', '대구광역시']):
+        return '대구광역시'
+    if any(kw in text for kw in ['광주', '광주광역시']):
+        return '광주광역시'
+    if any(kw in text for kw in ['울산', '울산광역시']):
+        return '울산광역시'
     if any(kw in text for kw in ['대전', '한밭대', '배재대', '대전대', '우송대', '목원대']):
         return '대전광역시'
     if any(kw in text for kw in ['세종', '세종특별자치시']):
         return '세종특별자치시'
-    return '충청권'
+    if any(kw in text for kw in ['충북', '충청북도', '청주', '충주', '제천', '음성', '진천', '괴산', '증평', '보은', '옥천', '영동', '단양', '충북대', '서원대', '청주대', '청주교대', '세명대', '중원대', '유원대', '극동대']):
+        return '충청북도'
+    if any(kw in text for kw in ['충남', '충청남도', '천안', '아산', '공주', '홍성', '예산', '태안', '당진', '서산', '보령', '서천', '부여', '논산', '계룡', '금산', '충남대', '건양대', '순천향대', '백석대', '선문대', '호서대', '남서울대', '공주교대']):
+        return '충청남도'
+    if any(kw in text for kw in ['전북', '전라북도', '전북특별자치도', '전주', '익산', '군산', '정읍', '남원', '김제', '완주', '진안', '무주', '장수', '임실', '순창', '고창', '부안']):
+        return '전라북도'
+    if any(kw in text for kw in ['전남', '전라남도', '목포', '여수', '순천', '나주', '광양', '담양', '곡성', '구례', '고흥', '보성', '화순', '장흥', '강진', '해남', '영암', '무안', '함평', '영광', '장성', '완도', '진도', '신안']):
+        return '전라남도'
+    if any(kw in text for kw in ['경북', '경상북도', '포항', '경주', '김천', '안동', '구미', '영주', '영천', '상주', '문경', '경산', '군위', '의성', '청송', '영양', '영덕', '청도', '고령', '성주', '칠곡', '예천', '봉화', '울진', '울릉']):
+        return '경상북도'
+    if any(kw in text for kw in ['경남', '경상남도', '창원', '진주', '통영', '사천', '김해', '밀양', '거제', '양산', '의령', '함안', '창녕', '고성', '남해', '하동', '산청', '함양', '거창', '합천']):
+        return '경상남도'
+    if any(kw in text for kw in ['강원', '강원도', '강원특별자치도', '춘천', '원주', '강릉', '동해', '태백', '속초', '삼척', '홍천', '횡성', '영월', '평창', '정선', '철원', '화천', '양구', '인제', '고성', '양양']):
+        return '강원도'
+    if any(kw in text for kw in ['제주', '제주도', '제주특별자치도']):
+        return '제주특별자치도'
+    return '전국'
 
 def upsert_contest(contest: dict) -> bool:
-    if not is_target_region(contest):
-        return False
     try:
         contest['region'] = _extract_region(contest)
         supabase_upsert('contests', contest, on_conflict='url')

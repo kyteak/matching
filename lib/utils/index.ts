@@ -62,10 +62,24 @@ export const LEVEL_COLORS: Record<string, { bg: string; text: string }> = {
 }
 
 export const REGION_COLORS: Record<string, { bg: string; text: string; border: string; emoji: string }> = {
-  충청북도: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', emoji: '🏔️' },
-  충청남도: { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200', emoji: '🌊' },
-  세종특별자치시: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200', emoji: '🏛️' },
+  서울특별시: { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', emoji: '🏙️' },
+  경기도: { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200', emoji: '🌄' },
+  인천광역시: { bg: 'bg-cyan-50', text: 'text-cyan-700', border: 'border-cyan-200', emoji: '⚓' },
+  부산광역시: { bg: 'bg-sky-50', text: 'text-sky-700', border: 'border-sky-200', emoji: '🌊' },
+  대구광역시: { bg: 'bg-rose-50', text: 'text-rose-700', border: 'border-rose-200', emoji: '🍎' },
+  광주광역시: { bg: 'bg-lime-50', text: 'text-lime-700', border: 'border-lime-200', emoji: '🌿' },
   대전광역시: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', emoji: '⚗️' },
+  울산광역시: { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', emoji: '🏭' },
+  세종특별자치시: { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200', emoji: '🏛️' },
+  충청북도: { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', emoji: '🏔️' },
+  충청남도: { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200', emoji: '🌾' },
+  전라북도: { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', emoji: '🌱' },
+  전라남도: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', emoji: '🌊' },
+  경상북도: { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200', emoji: '🏯' },
+  경상남도: { bg: 'bg-violet-50', text: 'text-violet-700', border: 'border-violet-200', emoji: '⛵' },
+  강원도: { bg: 'bg-slate-50', text: 'text-slate-700', border: 'border-slate-200', emoji: '⛰️' },
+  제주특별자치도: { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-200', emoji: '🍊' },
+  전국: { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200', emoji: '🇰🇷' },
 }
 
 export const DEPARTMENTS = [

@@ -6,10 +6,9 @@ import { Contest } from '@/types/database'
 import { REGION_COLORS } from '@/lib/utils'
 import { Bookmark, BookmarkCheck, ExternalLink, Trophy } from 'lucide-react'
 
-const REGIONS = ['전체', '충청북도', '충청남도', '세종특별자치시', '대전광역시']
-
 export default function ContestPage() {
   const router = useRouter()
+  const [regions, setRegions] = useState<string[]>([])
   const [selectedRegion, setSelectedRegion] = useState('전체')
   const [contests, setContests] = useState<Contest[]>([])
   const [bookmarks, setBookmarks] = useState<Set<string>>(new Set())
@@ -31,6 +30,9 @@ export default function ContestPage() {
     if (saved) {
       try { setBookmarks(new Set(JSON.parse(saved))) } catch {}
     }
+    fetch('/api/contests/regions')
+      .then((r) => r.json())
+      .then((d) => setRegions(Array.isArray(d) ? d : []))
   }, [])
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function ContestPage() {
   return (
     <div className="flex flex-col h-full">
       <div className="overflow-x-auto flex gap-2 px-4 py-3 bg-white border-b scrollbar-hide flex-shrink-0 sticky top-14 z-10">
-        {REGIONS.map((r) => (
+        {['전체', ...regions].map((r) => (
           <button
             key={r}
             onClick={() => setSelectedRegion(r)}
