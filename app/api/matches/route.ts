@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
 
   let query = supabase
     .from('matches')
-    .select('*, profiles(id, nickname, skill_level)')
+    .select('*, profiles(id, nickname, full_name, department, skill_level)')
     .eq('status', '모집중')
     .gt('match_datetime', new Date().toISOString())
     .order('created_at', { ascending: false })

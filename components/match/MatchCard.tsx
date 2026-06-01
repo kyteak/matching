@@ -60,7 +60,10 @@ export function MatchCard({ match, currentUserId, hasApplied, onApply, applying 
         {match.profiles && (
           <div className="flex items-center gap-1">
             <Users className="w-3 h-3" />
-            <span>{match.profiles.nickname}</span>
+            <span>
+              {match.profiles.full_name}
+              {match.profiles.department ? ` (${match.profiles.department})` : ''}
+            </span>
           </div>
         )}
       </div>
